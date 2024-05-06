@@ -20,10 +20,11 @@ public class AlbumWindow implements Observer, Browsable{ //fönster som visar upp
 	private Stage stage; 
 	
 	
-	
-	public AlbumWindow(Album album) { // Sets up window
+	public AlbumWindow(Album album, MusicOrganizerWindow view) { // Sets up window
 		this.album = album;
+		
 		controller = new MusicOrganizerController();
+		controller.registerView(view);
 		
 		stage = new Stage();
 		stage.setTitle(album.toString());
@@ -41,7 +42,6 @@ public class AlbumWindow implements Observer, Browsable{ //fönster som visar upp
 	
 	public void update() { // Window shows the contents of its album, closes window if album ceases to exist
 		soundClipListView.display(album);
-		controller.closeWindow(this);
 	}
 
 	@Override

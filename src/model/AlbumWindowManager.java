@@ -46,6 +46,26 @@ public class AlbumWindowManager implements Subject, Iterable<Observer>{ // Manag
 		
 		return list;
 	}
+	
+	public List<Observer> returnObserversToBeDeleted(Album album) { // Used in controller to close observers containing album or subalbum of deleted album
+		
+		List<Album> albumList = new ArrayList<Album>(); // Contains subalbums of deleted album
+		List<Album> nullList = new ArrayList<Album>(); // Empty list that accumulates subalbums 
+		List<Observer> toBeReturned = new ArrayList<Observer>(); // Observers that contain any of those subalbums
+		
+		albumList.add(album); // Delete window of selected album
+		
+		albumList.addAll(album.returnAllSubalbumsAsList(nullList)); // Adds all subalbums of selected album to the albumlist
+		
+		for(Observer o : observers) { // checks if any observer contains any of the deleted subalbums and adds that observer to be returned
+			if(albumList.contains(o.getAlbum())) { 
+				toBeReturned.add(o);
+			}
+		}
+		
+		return toBeReturned;
+	}
+		
 
 	@Override
 	public Iterator<Observer> iterator() {

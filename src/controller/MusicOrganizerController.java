@@ -12,6 +12,7 @@ import model.SoundClipLoader;
 import model.SoundClipPlayer;
 import view.AlbumWindow;
 import view.MusicOrganizerWindow;
+import view.Observer;
 
 public class MusicOrganizerController {
 
@@ -85,9 +86,11 @@ public class MusicOrganizerController {
 		// TODO: Add your code here
 		if(view.getSelectedAlbum() != null) { //granskar att ett album �r valt
 			if(view.getSelectedAlbum().getParent() != null) { //granskar att albumet �r ett subalbum
+				closeWindowsContainingAlbum(windowManager.returnObserversToBeDeleted(view.getSelectedAlbum())); // Closes windows containing album to be deleted
 				view.getSelectedAlbum().getParent().removeSubAlbum(view.getSelectedAlbum().toString()); //tar bort valda albumet genom att ta bort albumet fr�n f�r�lderns subalbum
 				view.onAlbumRemoved(); 
 				windowManager.notifyObservers(); // Method can alter structure of shown albums
+				
 				
 			}
 			
@@ -143,22 +146,24 @@ public class MusicOrganizerController {
 
 	public void createAlbumWindow(Album selectedAlbum) { // Creates albumWindow in AlbumWindowmanager
 		// TODO Auto-generated method stub
-		AlbumWindow window = new AlbumWindow(selectedAlbum); 
+		AlbumWindow window = new AlbumWindow(selectedAlbum, this.view); 
 		windowManager.registerObserver(window); // Adds window as observer
 		
 		
 	}
 
-	public void closeWindow(AlbumWindow albumWindow) { // Closes albumWindow and removes it from list of observers in the windowmangager
+	public void closeWindow(Observer o) { // Closes albumWindow and removes it from list of observers in the windowmangager
 		// TODO Auto-generated method stub
-		albumWindow.getStage().close();
-		windowManager.removeObserver(albumWindow);
+		o.getStage().close();
+		windowManager.removeObserver(o);
 		
 		
 	}
 	
-	public void closeWindowsContainingAlbum() { //closes windows containing a particular album
-		
+	public void closeWindowsContainingAlbum(List<Observer> windowsContainingAlbum) { // Closes windows containing a particular album
+		for(Observer window : windowsContainingAlbum) {
+			closeWindow(window);
+		}
 	}
 }
 	

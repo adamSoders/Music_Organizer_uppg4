@@ -29,6 +29,21 @@ public class Album implements Iterable<Album>{
 		return subAlbums;
 
 	}
+	
+	public List<Album> returnAllSubalbumsAsList(List<Album> albumsToBeReturned) { // Returns subalbum of album as a list
+		List<Album> currentSubAlbums = new ArrayList<Album>(); // Subalbums of current album
+		List<Album> subalbumsToBeReturned = albumsToBeReturned; // Accumulation of subalbums
+		
+		currentSubAlbums.addAll(subAlbums.values()); // Adds sublabums from hashmap as list
+		subalbumsToBeReturned.addAll(currentSubAlbums);
+			for(Album subAlbum2 : currentSubAlbums) { 
+				subalbumsToBeReturned.addAll(subAlbum2.returnAllSubalbumsAsList(subalbumsToBeReturned)); // Recursively adds subalbums to accumulated list and gives accumulated list as parameter
+				
+			}
+			
+			return subalbumsToBeReturned;
+	}
+		
 
 	public boolean addTrack(SoundClip track) { // sätter till ljudfilen till listan
 		

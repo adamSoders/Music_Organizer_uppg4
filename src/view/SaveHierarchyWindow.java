@@ -2,25 +2,31 @@ package view;
 
 import java.io.File;
 
+import controller.MusicOrganizerController;
 import javafx.stage.FileChooser;
 
 public class SaveHierarchyWindow {
 
-	MusicOrganizerWindow stage;
+	MusicOrganizerWindow view;
+	MusicOrganizerController controller;
 	
 	
-	public SaveHierarchyWindow(MusicOrganizerWindow stage) { // GUI that enables user to save album hierarchy to files
-		this.stage = stage;
+	public SaveHierarchyWindow(MusicOrganizerWindow stage, MusicOrganizerController controller) { // GUI that enables user to save album hierarchy to files
+		this.view = view;
+		this.controller = controller;
 		
 		// Creates FileChooser window
-		FileChooser filechooser = new FileChooser();
-		File selectedFile = filechooser.showSaveDialog(stage.getPrimaryStage());
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Save album hierarchy");
 		
-		filechooser.getExtensionFilters().addAll(
-			     new FileChooser.ExtensionFilter("Serialized Files", "*.ser"),
+		fileChooser.getExtensionFilters().addAll(
+			     new FileChooser.ExtensionFilter("Serialized file", "*.ser"),
 			     new FileChooser.ExtensionFilter("HTML Files", "*.htm")
 			);
+		
+		File selectedFile = fileChooser.showSaveDialog(view.getPrimaryStage());
+		controller.saveFile(selectedFile); // If user exports file, the task is first delegated to the controller
+		
 	}
-	
 	
 }

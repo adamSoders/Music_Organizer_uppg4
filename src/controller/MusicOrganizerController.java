@@ -1,10 +1,16 @@
 package controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import model.Album;
+import model.ExportBehaviour;
+import model.FileLoader;
+import model.HTMLexporter;
+import model.SerializeHierarchy;
 import model.SoundClip;
 import model.SoundClipBlockingQueue;
 import model.SoundClipLoader;
@@ -20,6 +26,8 @@ public class MusicOrganizerController {
 	private SoundClipBlockingQueue queue;
 	private Album root;
 	private AlbumWindowManager windowManager;
+	private ExportBehaviour exportBehaviour; // Exports file depending on file type
+	private FileLoader loader; // Loads Hierarchy
 	
 	public MusicOrganizerController() {
 
@@ -166,6 +174,34 @@ public class MusicOrganizerController {
 		for(Observer window : windowsContainingAlbum) {
 			closeWindow(window);
 		}
+	}
+
+	public void saveFile(File selectedFile) throws IOException { // Exports file by delegating the task to an exportbehaviour
+		// TODO Auto-generated method stub
+		// Checks if file is of supported type
+		if(selectedFile != null) { 
+			if(selectedFile.getName().endsWith(".ser")) {
+				exportBehaviour = new SerializeHierarchy(this); 
+			} else if(selectedFile.getName().endsWith(".htm")) {
+				exportBehaviour = new HTMLexporter(this); 
+			} else {
+				throw new IOException("Unsupported file extension");
+			}
+		exportBehaviour.exportFile(root); 
+		}
+		
+	}
+
+	public void loadFile(File selectedFile) { // Loads serialized file by delegating the task to LoadHieararchy
+		// TODO Auto-generated method stub
+		if(selectedFile != null) {
+			loader = new FileLoader(selectedFile, this);
+			updateRoot(loader.deserialize());
+		}
+	}
+	
+	private void updateRoot(Album newRoot) { // Updates root album to loaded hierarchy
+		this.root = newRoot;
 	}
 }
 	

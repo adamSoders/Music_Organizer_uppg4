@@ -66,7 +66,7 @@ public class MusicOrganizerWindow extends Application implements Browsable{
 			bord.setTop(top);
 			
 			// Create the FileMenu in the top of the GUI
-			fileMenu = new FileMenu(this);
+			fileMenu = new FileMenu(this, controller);
 			top.getChildren().add(fileMenu);
 			
 			// Create buttons in the top of the GUI
@@ -277,6 +277,10 @@ public class MusicOrganizerWindow extends Application implements Browsable{
 	
 	public Stage getPrimaryStage() { // Returns primaryStage
 		return primaryStage;
+	}
+	
+	public MusicOrganizerController getApplicationController() { // Retruns the controller of the application //Modified
+		return this.controller;
 	}
 	
 }

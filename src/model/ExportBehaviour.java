@@ -1,6 +1,8 @@
 package model;
 
-public interface ExportBehaviour { // ....
+import java.io.File;
 
-	public void exportFile();
+public interface ExportBehaviour { // Implemented by different classes to that export files in certain ways
+
+	public void exportFile(Album root);
 }

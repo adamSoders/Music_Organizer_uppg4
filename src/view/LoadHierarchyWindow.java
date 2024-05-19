@@ -2,17 +2,25 @@ package view;
 
 import java.io.File;
 
+import controller.MusicOrganizerController;
 import javafx.stage.FileChooser;
 
 public class LoadHierarchyWindow {
 	
-	MusicOrganizerWindow stage;
+	MusicOrganizerWindow view;
+	MusicOrganizerController controller;
 	
-	public LoadHierarchyWindow(MusicOrganizerWindow stage) { // GUI that enables user to load album hierarchy from files
-		this.stage = stage;
+	public LoadHierarchyWindow(MusicOrganizerWindow stage, MusicOrganizerController controller) { // GUI that enables user to load album hierarchy from files
+		this.view = view;
+		this.controller = controller;
 		
 		// Creates FileChooser window
-		FileChooser filechooser = new FileChooser();
-		File selectedFile = filechooser.showOpenDialog(stage.getPrimaryStage());
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Load album hierarchy");
+		
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Serialized file", "*.ser"));
+		
+		File selectedFile = fileChooser.showOpenDialog(view.getPrimaryStage());
+		controller.loadFile(selectedFile);
 	}
 }

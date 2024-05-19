@@ -1,9 +1,10 @@
 package model;
+import java.io.Serializable;
 import java.util.*;
 
  
 
-public class Album implements Iterable<Album>{
+public class Album implements Iterable<Album>, Serializable{ // Modified to be serialiable
 
 	private Set<SoundClip> soundclips = new HashSet<SoundClip>(); //set, eftersom album innehåller unika soundclips
 	private Map<String,Album> subAlbums = new HashMap<String,Album>(); //albumets subalbum accesseras med hjälp av dess namn

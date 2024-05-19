@@ -21,6 +21,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 
 
@@ -31,8 +32,10 @@ public class MusicOrganizerWindow extends Application implements Browsable{
 	private TreeItem<Album> rootNode;
 	private TreeView<Album> tree;
 	private ButtonPaneHBox buttons;
+	private FileMenu fileMenu;
 	private SoundClipListView soundClipTable;
 	private TextArea messages;
+	private Stage primaryStage; // experiment
 	
 	
 	public static void main(String[] args) {
@@ -52,14 +55,23 @@ public class MusicOrganizerWindow extends Application implements Browsable{
 	public void start(Stage primaryStage) {
 				
 		try {
+			this.primaryStage = primaryStage; // Don't ask
 			controller.registerView(this);
 			primaryStage.setTitle("Music Organizer");
 			
 			bord = new BorderPane();
 			
+			// Vbox that contains the FileMenu and buttonHbox //change
+			VBox top = new VBox();
+			bord.setTop(top);
+			
+			// Create the FileMenu in the top of the GUI
+			fileMenu = new FileMenu(this);
+			top.getChildren().add(fileMenu);
+			
 			// Create buttons in the top of the GUI
 			buttons = new ButtonPaneHBox(controller, this);
-			bord.setTop(buttons);
+			top.getChildren().add(buttons);
 
 			// Create the tree in the left of the GUI
 			tree = createTreeView();
@@ -216,21 +228,42 @@ public class MusicOrganizerWindow extends Application implements Browsable{
 	 * Updates the album hierarchy with a new album
 	 * @param newAlbum
 	 */
-	public void onAlbumAdded(Album newAlbum){
-		TreeItem<Album> parentItem = getSelectedTreeItem();
-		TreeItem<Album> newItem = new TreeItem<>(newAlbum);
-		parentItem.getChildren().add(newItem);
-		parentItem.setExpanded(true); // automatically expand the parent node in the tree
-	}
-	
+	public void onAlbumAdded(Album parent, Album newAlbum){
+		
+		TreeItem<Album> root = tree.getRoot();
+		TreeItem<Album> parentNode = findAlbumNode(parent, root);
+			
+		parentNode.getChildren().add(new TreeItem<>(newAlbum));
+		parentNode.setExpanded(true); // automatically expand the parent node in the tree	
+			
+	}	
 	/**
 	 * Updates the album hierarchy by removing an album from it
 	 */
-	public void onAlbumRemoved(){
-		TreeItem<Album> toRemove = getSelectedTreeItem(); 
-		TreeItem<Album> parent = toRemove.getParent();
-		parent.getChildren().remove(toRemove);
+	public void onAlbumRemoved(Album toRemove){
+		
+		TreeItem<Album> root = tree.getRoot();
 			
+		TreeItem<Album> nodeToRemove = findAlbumNode(toRemove, root);
+		nodeToRemove.getParent().getChildren().remove(nodeToRemove);
+			
+	}
+	
+	private TreeItem<Album> findAlbumNode(Album albumToFind, TreeItem<Album> root) {
+		
+		// recursive method to locate a node that contains a specific album in the TreeView
+			
+		if(root.getValue().equals(albumToFind)) {
+			return root;
+		}
+			
+		for(TreeItem<Album> node : root.getChildren()) {
+			TreeItem<Album> item = findAlbumNode(albumToFind, node);
+			if(item != null)
+				return item;
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -240,6 +273,10 @@ public class MusicOrganizerWindow extends Application implements Browsable{
 	public void onClipsUpdated(){
 		Album a = getSelectedAlbum();
 		soundClipTable.display(a);
+	}
+	
+	public Stage getPrimaryStage() { // Returns primaryStage
+		return primaryStage;
 	}
 	
 }

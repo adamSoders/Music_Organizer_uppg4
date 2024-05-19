@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Set;
 
 import model.Album;
-import model.AlbumWindowManager;
 import model.SoundClip;
 import model.SoundClipBlockingQueue;
 import model.SoundClipLoader;
 import model.SoundClipPlayer;
 import view.AlbumWindow;
+import view.AlbumWindowManager;
 import view.MusicOrganizerWindow;
 import view.Observer;
 
@@ -73,7 +73,7 @@ public class MusicOrganizerController {
 			String newName = view.promptForAlbumName();
 			if(newName != null) {
 				view.getSelectedAlbum().addSubAlbum(newName);
-				view.onAlbumAdded(view.getSelectedAlbum().getSubAlbums().get(newName));
+				view.onAlbumAdded(view.getSelectedAlbum(), view.getSelectedAlbum().getSubAlbums().get(newName)); // Modified to also take parent album as parameter
 			}	
 		}
 	}
@@ -88,7 +88,7 @@ public class MusicOrganizerController {
 			if(view.getSelectedAlbum().getParent() != null) { //granskar att albumet �r ett subalbum
 				closeWindowsContainingAlbum(windowManager.returnObserversToBeDeleted(view.getSelectedAlbum())); // Closes windows containing album to be deleted
 				view.getSelectedAlbum().getParent().removeSubAlbum(view.getSelectedAlbum().toString()); //tar bort valda albumet genom att ta bort albumet fr�n f�r�lderns subalbum
-				view.onAlbumRemoved(); 
+				view.onAlbumRemoved(view.getSelectedAlbum()); // Modified to take removed album as parameter
 				windowManager.notifyObservers(); // Method can alter structure of shown albums
 				
 				
@@ -146,8 +146,10 @@ public class MusicOrganizerController {
 
 	public void createAlbumWindow(Album selectedAlbum) { // Creates albumWindow in AlbumWindowmanager
 		// TODO Auto-generated method stub
-		AlbumWindow window = new AlbumWindow(selectedAlbum, this.view); 
-		windowManager.registerObserver(window); // Adds window as observer
+		if(selectedAlbum != null) {
+			AlbumWindow window = new AlbumWindow(selectedAlbum, this.view); 
+			windowManager.registerObserver(window); // Adds window as observer
+		}
 		
 		
 	}

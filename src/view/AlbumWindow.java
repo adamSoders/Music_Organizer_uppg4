@@ -23,7 +23,7 @@ public class AlbumWindow implements Observer, Browsable{ //fönster som visar upp
 	public AlbumWindow(Album album, MusicOrganizerWindow view) { // Sets up window
 		this.album = album;
 		
-		controller = new MusicOrganizerController();
+		controller = new MusicOrganizerController(); 
 		controller.registerView(view);
 		
 		stage = new Stage();

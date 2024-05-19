@@ -1,6 +1,4 @@
-package model;
-
-import view.Observer;
+package view;
 
 public interface Subject { //albumWindowManager implementerar detta interface
 	

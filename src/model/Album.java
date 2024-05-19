@@ -30,7 +30,7 @@ public class Album implements Iterable<Album>{
 
 	}
 	
-	public List<Album> returnAllSubalbumsAsList(List<Album> albumsToBeReturned) { // Returns subalbum of album as a list
+	public List<Album> returnAllSubalbumsAsList(List<Album> albumsToBeReturned) { // Returns entire tree of subalbums of album as a list
 		List<Album> currentSubAlbums = new ArrayList<Album>(); // Subalbums of current album
 		List<Album> subalbumsToBeReturned = albumsToBeReturned; // Accumulation of subalbums
 		

@@ -1,11 +1,10 @@
-package model;
+package view;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import view.AlbumWindow;
-import view.Observer;
+import model.Album;
 
 public class AlbumWindowManager implements Subject, Iterable<Observer>{ // Manages AlbumWindows
 	

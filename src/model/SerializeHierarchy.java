@@ -12,16 +12,17 @@ public class SerializeHierarchy implements ExportBehaviour{
 
 	MusicOrganizerController controller;
 	
-	public SerializeHierarchy(MusicOrganizerController controller) {
+	public SerializeHierarchy(File selectedFile, MusicOrganizerController controller) {
 		this.controller = controller;
 	}
 	
-	public void exportFile(Album root) { // Serializes root album
+	public void exportFile(File selectedFile, Album root) { // Serializes root album
 		
 		try {
-			FileOutputStream fileStream = new FileOutputStream("");
+			FileOutputStream fileStream = new FileOutputStream(selectedFile);
 			ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
 			objectStream.writeObject(root);
+			
 			objectStream.close();
 			fileStream.close();
 			

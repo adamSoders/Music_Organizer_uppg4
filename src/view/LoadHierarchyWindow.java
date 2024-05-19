@@ -10,7 +10,7 @@ public class LoadHierarchyWindow {
 	MusicOrganizerWindow view;
 	MusicOrganizerController controller;
 	
-	public LoadHierarchyWindow(MusicOrganizerWindow stage, MusicOrganizerController controller) { // GUI that enables user to load album hierarchy from files
+	public LoadHierarchyWindow(MusicOrganizerWindow view, MusicOrganizerController controller) { // GUI that enables user to load album hierarchy from files
 		this.view = view;
 		this.controller = controller;
 		

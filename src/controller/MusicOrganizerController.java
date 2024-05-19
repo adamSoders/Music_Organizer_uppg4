@@ -179,15 +179,15 @@ public class MusicOrganizerController {
 	public void saveFile(File selectedFile) throws IOException { // Exports file by delegating the task to an exportbehaviour
 		// TODO Auto-generated method stub
 		// Checks if file is of supported type
-		if(selectedFile != null) { 
+		if(selectedFile != null) {
 			if(selectedFile.getName().endsWith(".ser")) {
-				exportBehaviour = new SerializeHierarchy(this); 
+				exportBehaviour = new SerializeHierarchy(selectedFile,this); 
 			} else if(selectedFile.getName().endsWith(".htm")) {
-				exportBehaviour = new HTMLexporter(this); 
+				exportBehaviour = new HTMLexporter(selectedFile,this); 
 			} else {
 				throw new IOException("Unsupported file extension");
 			}
-		exportBehaviour.exportFile(root); 
+		exportBehaviour.exportFile(selectedFile,root); 
 		}
 		
 	}

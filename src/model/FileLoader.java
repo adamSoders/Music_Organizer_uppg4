@@ -22,7 +22,7 @@ public class FileLoader { // Deserializes file
 		// TODO Auto-generated method stub
 		Album newRoot;
 		try {
-	         FileInputStream fileStream = new FileInputStream("");
+	         FileInputStream fileStream = new FileInputStream(file);
 	         ObjectInputStream objectStream = new ObjectInputStream(fileStream);
 	         newRoot = (Album) objectStream.readObject();
 	         objectStream.close();

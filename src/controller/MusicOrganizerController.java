@@ -1,3 +1,4 @@
+
 package controller;
 
 import java.io.File;
@@ -197,6 +198,7 @@ public class MusicOrganizerController {
 		if(selectedFile != null) {
 			loader = new FileLoader(selectedFile, this);
 			updateRoot(loader.deserialize());
+			view.onHierarchyUpdated();
 		}
 	}
 	

@@ -275,6 +275,30 @@ public class MusicOrganizerWindow extends Application implements Browsable{
 		soundClipTable.display(a);
 	}
 	
+	public void onHierarchyUpdated() { // Updates album hierarchy when hierarchy is loaded
+		rootNode = new TreeItem<>(controller.getRootAlbum()); 
+	    buildTree(rootNode, controller.getRootAlbum()); 
+	    tree.setRoot(rootNode);
+	    expandTreeView(rootNode);
+	}
+	
+	private void buildTree(TreeItem<Album> parentNode, Album parentAlbum) { // Recursively adds childNodes that contain the subalbum of certain album
+	    for (Album subAlbum : parentAlbum.getSubAlbums().values()) {
+	        TreeItem<Album> childNode = new TreeItem<>(subAlbum);
+	        parentNode.getChildren().add(childNode);
+	        buildTree(childNode, subAlbum);  // Recursively build tree for subalbums
+	    }
+	}
+	
+	private void expandTreeView(TreeItem<Album> node) { // Recursively expands the album hierarchy
+	    if (node != null && !node.isLeaf()) {
+	        node.setExpanded(true);
+	        for (TreeItem<Album> child : node.getChildren()) {
+	            expandTreeView(child);
+	        }
+	    }
+	}
+	
 	public Stage getPrimaryStage() { // Returns primaryStage
 		return primaryStage;
 	}
